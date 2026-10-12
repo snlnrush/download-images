@@ -17,8 +17,19 @@ with sync_playwright() as p:
 	print(page.title())
 	header_h1 = page.locator("[class = 'title']").nth(0).inner_text()
 	print(header_h1)
-	images_url = page.locator("img src").all_inner_texts()
+	images = page.locator("img").all()
+
+	images_url = set()
+
+	for item in images:
+		if 'Upload' in item.get_attribute('src'):
+			images_url.add(item.get_attribute('src'))
+
 	print(images_url)
+
+	# images_url = page.get_attribute('div a img', 'src')
+	# print(images_url)
+
 	# Сохраняем скриншот в файл
 	page.screenshot(path="example.png")
 	# Закрываем браузер
